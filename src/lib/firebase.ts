@@ -13,15 +13,26 @@ const firebaseConfig = {
 };
 
 function getFirebaseApp(): FirebaseApp | null {
-    if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
-        console.error("Firebase config is missing or incomplete. Make sure all NEXT_PUBLIC_FIREBASE_ environment variables are set in your .env file.");
+    if (
+        !firebaseConfig.apiKey ||
+        !firebaseConfig.authDomain ||
+        !firebaseConfig.projectId
+    ) {
+        console.error(
+            'Firebase config is missing or incomplete. Make sure all NEXT_PUBLIC_FIREBASE_ environment variables are set in your .env file.'
+        );
         return null;
     }
 
-    if (getApps().length) {
-        return getApp();
-    } else {
-        return initializeApp(firebaseConfig);
+    try {
+        if (getApps().length) {
+            return getApp();
+        } else {
+            return initializeApp(firebaseConfig);
+        }
+    } catch (e) {
+        console.error("Failed to initialize Firebase", e);
+        return null;
     }
 }
 
