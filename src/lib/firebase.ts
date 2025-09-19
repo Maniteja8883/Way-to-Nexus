@@ -1,6 +1,6 @@
 
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDCLE-kWEhAvg-Gf-fjVrggeAGt-4HUjMI",
@@ -12,20 +12,29 @@ const firebaseConfig = {
   measurementId: ""
 };
 
-
 // Initialize Firebase
-let app;
-let auth;
+let app: FirebaseApp;
+let auth: Auth;
 
-try {
-    app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-    auth = getAuth(app);
-} catch (error) {
-    console.error("Firebase initialization error:", error);
-    // In a real app, you might want to handle this more gracefully
-    app = null;
-    auth = null;
+if (getApps().length) {
+    app = getApp();
+} else {
+    try {
+        app = initializeApp(firebaseConfig);
+    } catch (error) {
+        console.error("Firebase initialization error:", error);
+        // In a real app, you might want to handle this more gracefully
+    }
 }
 
+// @ts-ignore
+if (app) {
+    try {
+        auth = getAuth(app);
+    } catch (error) {
+        console.error("Firebase Auth initialization error:", error);
+    }
+}
 
+// @ts-ignore
 export { app, auth };
