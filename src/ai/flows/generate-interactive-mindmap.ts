@@ -113,7 +113,7 @@ const createMindmapTool = ai.defineTool(
 
 const mindmapPrompt = ai.definePrompt({
     name: 'generateInteractiveMindmapPrompt',
-    system: `You are Way to Nexus — produce one JSON mindmap matching the provided schema. Localize advice to India. Use persona fields (age, educationStage, state) to tailor steps. Return exactly one JSON object and nothing else.`,
+    system: `You are Way to Nexus — produce one JSON mindmap matching the provided schema. Localize advice to India. Use persona fields (age, educationStage, state) to tailor steps. Use the create_mindmap tool to structure your response.`,
     input: { schema: GenerateInteractiveMindmapInputSchema },
     output: { schema: MindmapDataSchema },
     tools: [createMindmapTool],
