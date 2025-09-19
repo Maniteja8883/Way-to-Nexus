@@ -17,6 +17,7 @@ export default function PersonasPage() {
   const { toast } = useToast();
   const [personas, setPersonas] = useState<Persona[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function PersonasPage() {
   }, [user, toast]);
 
   const addPersona = async (newPersonaData: Omit<Persona, 'id'>) => {
+    setIsSubmitting(true);
     try {
       const newPersonaId = await addPersonaToFirestore(newPersonaData);
       const newPersona: Persona = {
@@ -64,6 +66,8 @@ export default function PersonasPage() {
           title: "Creation Failed",
           description: "Could not save your persona. Please try again.",
         });
+    } finally {
+        setIsSubmitting(false);
     }
   };
   
@@ -118,7 +122,7 @@ export default function PersonasPage() {
             <DialogHeader>
               <DialogTitle className="font-headline text-2xl">Create New Persona</DialogTitle>
             </DialogHeader>
-            <CreatePersonaForm onPersonaCreate={addPersona} />
+            <CreatePersonaForm onPersonaCreate={addPersona} isSubmitting={isSubmitting} />
           </DialogContent>
         </Dialog>
       </div>

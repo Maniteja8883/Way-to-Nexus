@@ -25,7 +25,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Persona } from "@/lib/types";
-import { X, Info } from "lucide-react";
+import { X, Info, Loader2 } from "lucide-react";
 
 const indianStates = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry", "Prefer not to say"];
 const educationStages = ['Primary (≤10)', 'Secondary (class 11–12)', 'Undergraduate', 'Postgraduate', 'Working professional', 'Other'] as const;
@@ -68,9 +68,10 @@ const formSchema = z.object({
 
 interface CreatePersonaFormProps {
   onPersonaCreate: (data: Omit<Persona, 'id'>) => void;
+  isSubmitting: boolean;
 }
 
-export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
+export function CreatePersonaForm({ onPersonaCreate, isSubmitting }: CreatePersonaFormProps) {
   const [interestInput, setInterestInput] = useState("");
   const [skillInput, setSkillInput] = useState("");
 
@@ -123,7 +124,6 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
         stream: values.educationStage === 'Secondary (class 11–12)' ? values.stream : [],
     };
     onPersonaCreate(personaData);
-    form.reset();
   }
 
   return (
@@ -481,7 +481,8 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
                 />
         </section>
 
-        <Button type="submit" size="lg" className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold">
+        <Button type="submit" size="lg" className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold" disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Create Persona
         </Button>
       </form>
@@ -492,3 +493,4 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
     
 
     
+
