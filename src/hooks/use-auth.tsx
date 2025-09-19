@@ -69,9 +69,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // First, try signing in with a popup
       await signInWithPopup(auth, provider);
     } catch (error: any) {
-      // If the popup is blocked or fails, fall back to a redirect.
-      if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
-        console.warn("Popup failed, falling back to redirect:", error);
+      // If the popup is blocked or fails (e.g., user closes it), fall back to a redirect.
+      if (error.code === 'auth/popup-blocked' || 
+          error.code === 'auth/cancelled-popup-request' ||
+          error.code === 'auth/popup-closed-by-user') {
+        console.warn("Popup failed or was closed, falling back to redirect:", error);
         await signInWithRedirect(auth, provider);
       } else {
         console.error("Error signing in with Google: ", error);
