@@ -53,7 +53,7 @@ export function Mindmap({ data, error, isLoading, onNodeClick }: MindmapProps) {
       const targetNode = positionedNodes.find(n => n && n.data && n.data.id === edge.data.target);
       if (!sourceNode || !targetNode) return null;
       return {
-        id: edge.data.id || `${edge.data.source}-${edge.data.target}`,
+        id: (edge.data && edge.data.id) || `${edge.data.source}-${edge.data.target}`,
         x1: sourceNode.position.x,
         y1: sourceNode.position.y,
         x2: targetNode.position.x,
@@ -110,6 +110,7 @@ export function Mindmap({ data, error, isLoading, onNodeClick }: MindmapProps) {
         </g>
         <g>
           {positionedNodes.map((node, index) => (
+            node && node.data && node.data.label && (
             <motion.g
               key={node.data.id}
               initial={{ opacity: 0, scale: 0.5 }}
@@ -128,6 +129,7 @@ export function Mindmap({ data, error, isLoading, onNodeClick }: MindmapProps) {
                   </Button>
               </foreignObject>
             </motion.g>
+            )
           ))}
         </g>
       </svg>
