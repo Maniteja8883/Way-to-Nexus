@@ -112,10 +112,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   if (!auth) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background text-destructive-foreground p-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold">Firebase Configuration Error</h1>
-          <p>Could not connect to Firebase. Please check your configuration.</p>
+      <div className="flex h-screen items-center justify-center bg-background p-4">
+        <div className="text-center rounded-lg border-2 border-dashed border-destructive p-8">
+          <h1 className="text-2xl font-bold text-destructive">Firebase Configuration Error</h1>
+          <p className="text-destructive-foreground/80 mt-2">Could not connect to Firebase. Please check your environment variables and Firebase project settings.</p>
         </div>
       </div>
     )

@@ -12,31 +12,22 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-let app: FirebaseApp;
-let auth: Auth;
+// Function to initialize and get the Firebase app instance
+function getFirebaseApp(): FirebaseApp | null {
+    // Validate that all required config values are present
+    if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
+        console.error("Firebase config is missing or incomplete. Make sure all NEXT_PUBLIC_FIREBASE_ environment variables are set.");
+        return null;
+    }
 
-if (getApps().length) {
-    app = getApp();
-} else {
-    try {
-        if (firebaseConfig.apiKey) {
-            app = initializeApp(firebaseConfig);
-        } else {
-            console.error("Firebase config is missing. Make sure to set up your .env file.");
-        }
-    } catch (error) {
-        console.error("Firebase initialization error:", error);
+    if (getApps().length) {
+        return getApp();
+    } else {
+        return initializeApp(firebaseConfig);
     }
 }
 
-// @ts-ignore
-if (app) {
-    try {
-        auth = getAuth(app);
-    } catch (error) {
-        console.error("Firebase Auth initialization error:", error);
-    }
-}
+const app: FirebaseApp | null = getFirebaseApp();
+const auth: Auth | null = app ? getAuth(app) : null;
 
-// @ts-ignore
 export { app, auth };
