@@ -1,3 +1,4 @@
+
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
@@ -6,10 +7,11 @@ import {
   User, 
   GoogleAuthProvider, 
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
-  Auth
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import type { SignUpFormValues } from '@/components/auth/SignUpForm';
@@ -40,6 +42,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(user);
       setLoading(false);
     });
+
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          setUser(result.user);
+        }
+      })
+      .catch((error) => {
+        console.error("Error handling redirect result:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
     return () => unsubscribe();
   }, []);
 
@@ -48,9 +64,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.error("Error signing in with Google: ", error);
-      throw error;
+    } catch (error: any) {
+      if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
+        console.warn("Popup failed, falling back to redirect:", error);
+        await signInWithRedirect(auth, provider);
+      } else {
+        console.error("Error signing in with Google: ", error);
+        throw error;
+      }
     }
   };
 
@@ -80,6 +101,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!auth) throw new Error("Firebase Auth is not initialized.");
     try {
       await firebaseSignOut(auth);
+      setUser(null);
     } catch (error) {
       console.error("Error signing out: ", error);
       throw error;
@@ -88,6 +110,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const value = { user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, signOut };
 
+  if (loading) {
+    // You might want to show a global loader here
+    return null;
+  }
+  
   if (!auth) {
     return (
       <div className="flex h-screen items-center justify-center bg-background text-destructive-foreground p-4">
@@ -99,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     )
   }
 
-  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
