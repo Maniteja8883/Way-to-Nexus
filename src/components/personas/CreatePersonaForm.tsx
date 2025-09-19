@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState } from "react";
@@ -77,7 +78,7 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      age: undefined,
+      age: '' as unknown as number, // Initialize with empty string to make it controlled
       location: { city: "", state: "" },
       stream: [],
       currentCourseOrJob: "",
