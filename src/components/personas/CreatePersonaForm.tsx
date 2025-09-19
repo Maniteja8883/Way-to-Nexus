@@ -42,12 +42,12 @@ const formSchema = z.object({
     state: z.string().min(1, "State is required."),
     city: z.string().optional(),
   }),
-  educationStage: z.enum(educationStages),
+  educationStage: z.enum(educationStages, { required_error: "Required" }),
   stream: z.array(z.string()).optional(),
   currentCourseOrJob: z.string().optional(),
   careerGoals: z.string().min(1, "Career goal is required."),
   interests: z.array(z.string()).min(1, "Select at least one interest."),
-  techComfort: z.enum(techComfortLevels),
+  techComfort: z.enum(techComfortLevels, { required_error: "Required" }),
   preferredLearningModes: z.array(z.string()).optional(),
   skills: z.array(z.string()).optional(),
   constraints: z.string().optional(),
@@ -55,7 +55,12 @@ const formSchema = z.object({
     errorMap: () => ({ message: "You must consent to persona storage." }),
   }),
   shareAnonymously: z.boolean().optional(),
-}).refine(data => !(data.educationStage === 'Secondary (class 11–12)' && (!data.stream || data.stream.length === 0)), {
+}).refine(data => {
+    if (data.educationStage === 'Secondary (class 11–12)') {
+        return data.stream && data.stream.length > 0;
+    }
+    return true;
+}, {
     message: "Please choose at least one stream.",
     path: ["stream"],
 });
