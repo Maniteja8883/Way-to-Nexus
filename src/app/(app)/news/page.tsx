@@ -5,11 +5,10 @@ import { Rss } from "lucide-react";
 
 async function getNewsData() {
     const jobQueries = ["AI Prompt Engineer", "Data Storyteller", "Chief Metaverse Officer", "AI Ethicist"];
-    const newsPromises = jobQueries.map(query => aiCuratedNewsFeed({ query }));
     
     try {
-        const results = await Promise.all(newsPromises);
-        return results as NewsArticle[];
+        const result = await aiCuratedNewsFeed({ queries: jobQueries });
+        return result.articles as NewsArticle[];
     } catch(error) {
         console.error("Failed to fetch news feed:", error);
         // In a real app, you might want to return cached data or a specific error state.

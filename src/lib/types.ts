@@ -43,7 +43,7 @@ export type MindmapNode = {
   id: string;
   label: string;
   type: 'stage' | 'choice' | 'goal' | 'skill' | 'resource' | 'exam' | 'note';
-  metadata: {
+  metadata?: {
     [key: string]: any;
     personaPrompt?: string;
   };
