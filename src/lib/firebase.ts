@@ -12,11 +12,9 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Function to initialize and get the Firebase app instance
 function getFirebaseApp(): FirebaseApp | null {
-    // Validate that all required config values are present
     if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
-        console.error("Firebase config is missing or incomplete. Make sure all NEXT_PUBLIC_FIREBASE_ environment variables are set.");
+        console.error("Firebase config is missing or incomplete. Make sure all NEXT_PUBLIC_FIREBASE_ environment variables are set in your .env file.");
         return null;
     }
 

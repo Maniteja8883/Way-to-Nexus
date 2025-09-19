@@ -43,9 +43,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     });
 
+    // Handle the redirect result on component mount
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
+          // This is the signed-in user from the redirect.
           setUser(result.user);
         }
       })
@@ -53,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.error("Error handling redirect result:", error);
       })
       .finally(() => {
+        // This is to prevent a flash of the login page
         setLoading(false);
       });
 
@@ -63,8 +66,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!auth) throw new Error("Firebase Auth is not initialized.");
     const provider = new GoogleAuthProvider();
     try {
+      // First, try signing in with a popup
       await signInWithPopup(auth, provider);
     } catch (error: any) {
+      // If the popup is blocked or fails, fall back to a redirect.
       if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
         console.warn("Popup failed, falling back to redirect:", error);
         await signInWithRedirect(auth, provider);
