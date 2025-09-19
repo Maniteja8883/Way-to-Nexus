@@ -49,8 +49,8 @@ export function Mindmap({ data, error, isLoading, onNodeClick }: MindmapProps) {
     if (!data || !data.edges || positionedNodes.length === 0) return [];
     
     return data.edges.map(edge => {
-      const sourceNode = positionedNodes.find(n => n.data.id === edge.data.source);
-      const targetNode = positionedNodes.find(n => n.data.id === edge.data.target);
+      const sourceNode = positionedNodes.find(n => n && n.data && n.data.id === edge.data.source);
+      const targetNode = positionedNodes.find(n => n && n.data && n.data.id === edge.data.target);
       if (!sourceNode || !targetNode) return null;
       return {
         id: edge.data.id || `${edge.data.source}-${edge.data.target}`,
