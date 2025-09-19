@@ -53,16 +53,15 @@ export function ChatPanel({ messages, onNewMessage, onNodeClick }: ChatPanelProp
       timestamp: Date.now(),
     };
     
-    // For demo purposes, we add a mock assistant response immediately.
-    // The parent component will then call the real AI flow.
-    const assistantMessage: ChatMessage = {
-      id: `assistant-${Date.now()}`,
+    // Add a mock assistant "thinking" message for immediate feedback
+    const assistantThinkingMessage: ChatMessage = {
+      id: `assistant-thinking-${Date.now()}`,
       role: "assistant",
       content: "Thinking...",
       timestamp: Date.now(),
     };
 
-    const updatedMessages = [...messages, userMessage, assistantMessage];
+    const updatedMessages = [...messages, userMessage, assistantThinkingMessage];
     await onNewMessage(updatedMessages);
 
     setIsLoading(false);
