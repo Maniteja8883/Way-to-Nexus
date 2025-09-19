@@ -4,14 +4,22 @@ export type Persona = {
   name: string;
   age: number;
   location: {
-    city: string;
     state: string;
+    city?: string | null;
   };
-  educationStage: 'High School' | 'Undergraduate' | 'Postgraduate' | 'Professional';
-  stream: string; // e.g., "Science", "Commerce", "Arts", "Engineering"
-  techComfort: 'Beginner' | 'Intermediate' | 'Advanced';
+  educationStage: 'Primary (≤10)' | 'Secondary (class 11–12)' | 'Undergraduate' | 'Postgraduate' | 'Working professional' | 'Other';
+  stream?: string[];
+  currentCourseOrJob?: string | null;
+  careerGoals: string[];
   interests: string[];
-  goals: string;
+  techComfort: 'Beginner' | 'Comfortable' | 'Proficient' | 'Expert' | 'Prefer not to say';
+  preferredLearningModes?: string[];
+  skills?: string[];
+  constraints?: string | null;
+  consentToStore: boolean;
+  shareAnonymously?: boolean;
+  createdAt?: any; // Ideally Firestore ServerTimestamp
+  updatedAt?: any; // Ideally Firestore ServerTimestamp
 };
 
 
@@ -23,7 +31,7 @@ export type NewsArticle = {
 };
 
 export type ChatMessage = {
-  id: string;
+  id:string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: number;

@@ -10,38 +10,47 @@ import { PlusCircle } from "lucide-react";
 import type { Persona } from "@/lib/types";
 
 const samplePersonas: Persona[] = [
-  { 
-    id: '1', 
-    name: 'Aarav Sharma', 
-    age: 21, 
-    location: { city: 'Bengaluru', state: 'Karnataka' },
+  {
+    id: '1',
+    name: 'Aarav Sharma',
+    age: 21,
+    location: { state: 'Karnataka', city: 'Bengaluru' },
     educationStage: 'Undergraduate',
-    stream: 'Computer Science Engineering',
-    techComfort: 'Advanced',
+    currentCourseOrJob: 'B.Tech CSE',
+    careerGoals: ['Software Engineer', 'Startup Founder'],
     interests: ['Artificial Intelligence', 'Cloud Computing', 'Startups'],
-    goals: 'Secure a software engineering role at a top product-based company and eventually launch my own tech startup.' 
+    techComfort: 'Proficient',
+    skills: ['Python', 'React', 'Node.js'],
+    constraints: 'Looking for remote internships.',
+    consentToStore: true,
   },
-  { 
-    id: '2', 
-    name: 'Priya Singh', 
-    age: 17, 
-    location: { city: 'Mumbai', state: 'Maharashtra' },
-    educationStage: 'High School',
-    stream: 'Commerce',
-    techComfort: 'Intermediate',
+  {
+    id: '2',
+    name: 'Priya Singh',
+    age: 17,
+    location: { state: 'Maharashtra', city: 'Mumbai' },
+    educationStage: 'Secondary (class 11–12)',
+    stream: ['Commerce', 'Economics', 'Maths'],
+    careerGoals: ['Investment Banking'],
     interests: ['Finance', 'Marketing', 'Photography'],
-    goals: 'Get into a top B-school for a BBA in Finance and explore a career in investment banking.'
+    techComfort: 'Comfortable',
+    preferredLearningModes: ['Online courses', 'Mentorship'],
+    consentToStore: true,
   },
-  { 
-    id: '3', 
-    name: 'Rohan Joshi', 
-    age: 26, 
-    location: { city: 'Pune', state: 'Maharashtra' },
-    educationStage: 'Professional',
-    stream: 'Marketing',
-    techComfort: 'Intermediate',
+  {
+    id: '3',
+    name: 'Rohan Joshi',
+    age: 26,
+    location: { state: 'Maharashtra', city: 'Pune' },
+    educationStage: 'Working professional',
+    currentCourseOrJob: 'Marketing Associate',
+    careerGoals: ['UX Designer'],
     interests: ['Digital Marketing', 'Content Creation', 'UX/UI Design'],
-    goals: 'Transition from a traditional marketing role to a UX designer position within the next two years.'
+    techComfort: 'Comfortable',
+    skills: ['SEO', 'Content Writing'],
+    constraints: 'Cannot relocate for the next 2 years.',
+    shareAnonymously: true,
+    consentToStore: true,
   },
 ];
 
@@ -73,7 +82,7 @@ export default function PersonasPage() {
               New Persona
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-2xl">
+          <DialogContent className="sm:max-w-3xl">
             <DialogHeader>
               <DialogTitle className="font-headline text-2xl">Create New Persona</DialogTitle>
             </DialogHeader>
