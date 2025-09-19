@@ -1,5 +1,7 @@
 
 
+import type { Timestamp } from "firebase/firestore";
+
 export type Persona = {
   id: string;
   name: string;
@@ -19,8 +21,8 @@ export type Persona = {
   constraints?: string | null;
   consentToStore: boolean;
   shareAnonymously?: boolean;
-  createdAt?: any; // Ideally Firestore ServerTimestamp
-  updatedAt?: any; // Ideally Firestore ServerTimestamp
+  createdAt?: Date | Timestamp;
+  updatedAt?: Date | Timestamp;
 };
 
 

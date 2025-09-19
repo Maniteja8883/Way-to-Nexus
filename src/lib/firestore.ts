@@ -10,7 +10,8 @@ import {
     serverTimestamp,
     query,
     where,
-    orderBy
+    orderBy,
+    Timestamp
 } from "firebase/firestore";
 import type { Persona } from "@/lib/types";
 
@@ -24,8 +25,6 @@ const db = getFirestore(app);
 const getUserId = () => {
     const user = auth?.currentUser;
     if (!user) {
-        // This could happen if the user is not logged in
-        // or if the auth state hasn't been propagated yet.
         console.warn("User is not authenticated. Cannot perform Firestore operation.");
         return null;
     }
@@ -72,21 +71,30 @@ export const getPersonasFromFirestore = async (): Promise<Persona[]> => {
         const personas: Persona[] = [];
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            personas.push({
+            const persona: Persona = {
                 id: doc.id,
-                ...data,
-                 // Timestamps might be null on the client until they are set by the server.
-                 // Here we are just casting, but a more robust solution might handle this case.
-                createdAt: data.createdAt,
-                updatedAt: data.updatedAt,
-            } as Persona);
+                name: data.name,
+                age: data.age,
+                location: data.location,
+                educationStage: data.educationStage,
+                careerGoals: data.careerGoals,
+                interests: data.interests,
+                techComfort: data.techComfort,
+                consentToStore: data.consentToStore,
+                stream: data.stream,
+                currentCourseOrJob: data.currentCourseOrJob,
+                preferredLearningModes: data.preferredLearningModes,
+                skills: data.skills,
+                constraints: data.constraints,
+                shareAnonymously: data.shareAnonymously,
+                createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate() : data.createdAt,
+                updatedAt: data.updatedAt instanceof Timestamp ? data.updatedAt.toDate() : data.updatedAt,
+            };
+            personas.push(persona);
         });
         return personas;
     } catch (error) {
         console.error("Error fetching personas from Firestore:", error);
-        // Depending on the app's needs, you might want to re-throw the error
-        // or handle it by returning an empty array or showing a user-facing error.
         throw new Error("Could not fetch personas.");
     }
 };
-

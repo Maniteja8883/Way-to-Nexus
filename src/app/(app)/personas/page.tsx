@@ -42,14 +42,13 @@ export default function PersonasPage() {
     fetchPersonas();
   }, [user, toast]);
 
-  const addPersona = async (newPersonaData: Omit<Persona, 'id'>) => {
+  const addPersona = async (newPersonaData: Omit<Persona, 'id' | 'createdAt' | 'updatedAt'>) => {
     setIsSubmitting(true);
     try {
       const newPersonaId = await addPersonaToFirestore(newPersonaData);
       const newPersona: Persona = {
         ...newPersonaData,
         id: newPersonaId,
-        // The timestamps will be set by the server, so we can use a client-side estimate for immediate UI update
         createdAt: new Date(), 
         updatedAt: new Date(),
       };
