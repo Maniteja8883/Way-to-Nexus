@@ -60,11 +60,6 @@ const formSchema = z.object({
     path: ["stream"],
 });
 
-type CreatePersonaFormValues = Omit<z.infer<typeof formSchema>, 'careerGoals' | 'skills'> & {
-    careerGoals: string;
-    skills: string;
-};
-
 
 interface CreatePersonaFormProps {
   onPersonaCreate: (data: Omit<Persona, 'id'>) => void;
@@ -78,7 +73,7 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      age: '' as unknown as number, // Initialize with empty string to make it controlled
+      age: '' as unknown as number,
       location: { city: "", state: "" },
       stream: [],
       currentCourseOrJob: "",
@@ -120,7 +115,7 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
         },
         currentCourseOrJob: values.currentCourseOrJob || null,
         constraints: values.constraints || null,
-        stream: values.educationStage === 'Secondary (class 11–12)' ? values.stream : undefined,
+        stream: values.educationStage === 'Secondary (class 11–12)' ? values.stream : [],
     };
     onPersonaCreate(personaData);
     form.reset();
@@ -488,5 +483,7 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
     </Form>
   );
 }
+
+    
 
     
