@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -9,10 +10,41 @@ import { PlusCircle } from "lucide-react";
 import type { Persona } from "@/lib/types";
 
 const samplePersonas: Persona[] = [
-  { id: '1', name: 'Recent Graduate', age: 22, occupation: 'Software Engineer', industry: 'Tech', goals: 'Find a first job in a FAANG company' },
-  { id: '2', name: 'Career Changer', age: 35, occupation: 'Project Manager', industry: 'Healthcare', goals: 'Transition into a data science role' },
-  { id: '3', name: 'Aspiring Entrepreneur', age: 28, occupation: 'Marketing Specialist', industry: 'E-commerce', goals: 'Start my own sustainable fashion brand' },
+  { 
+    id: '1', 
+    name: 'Aarav Sharma', 
+    age: 21, 
+    location: { city: 'Bengaluru', state: 'Karnataka' },
+    educationStage: 'Undergraduate',
+    stream: 'Computer Science Engineering',
+    techComfort: 'Advanced',
+    interests: ['Artificial Intelligence', 'Cloud Computing', 'Startups'],
+    goals: 'Secure a software engineering role at a top product-based company and eventually launch my own tech startup.' 
+  },
+  { 
+    id: '2', 
+    name: 'Priya Singh', 
+    age: 17, 
+    location: { city: 'Mumbai', state: 'Maharashtra' },
+    educationStage: 'High School',
+    stream: 'Commerce',
+    techComfort: 'Intermediate',
+    interests: ['Finance', 'Marketing', 'Photography'],
+    goals: 'Get into a top B-school for a BBA in Finance and explore a career in investment banking.'
+  },
+  { 
+    id: '3', 
+    name: 'Rohan Joshi', 
+    age: 26, 
+    location: { city: 'Pune', state: 'Maharashtra' },
+    educationStage: 'Professional',
+    stream: 'Marketing',
+    techComfort: 'Intermediate',
+    interests: ['Digital Marketing', 'Content Creation', 'UX/UI Design'],
+    goals: 'Transition from a traditional marketing role to a UX designer position within the next two years.'
+  },
 ];
+
 
 export default function PersonasPage() {
   const [personas, setPersonas] = useState<Persona[]>(samplePersonas);
@@ -41,9 +73,9 @@ export default function PersonasPage() {
               New Persona
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="font-headline">Create New Persona</DialogTitle>
+              <DialogTitle className="font-headline text-2xl">Create New Persona</DialogTitle>
             </DialogHeader>
             <CreatePersonaForm onPersonaCreate={addPersona} />
           </DialogContent>

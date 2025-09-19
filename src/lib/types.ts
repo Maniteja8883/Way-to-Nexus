@@ -1,11 +1,19 @@
+
 export type Persona = {
   id: string;
   name: string;
   age: number;
-  occupation: string;
-  industry: string;
+  location: {
+    city: string;
+    state: string;
+  };
+  educationStage: 'High School' | 'Undergraduate' | 'Postgraduate' | 'Professional';
+  stream: string; // e.g., "Science", "Commerce", "Arts", "Engineering"
+  techComfort: 'Beginner' | 'Intermediate' | 'Advanced';
+  interests: string[];
   goals: string;
 };
+
 
 export type NewsArticle = {
   summary: string;
