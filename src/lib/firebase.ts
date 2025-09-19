@@ -11,7 +11,11 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
+// Check if all required environment variables are set
+const isConfigValid = firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId;
+
+const app = isConfigValid && !getApps().length ? initializeApp(firebaseConfig) : (isConfigValid ? getApp() : undefined);
+const auth = app ? getAuth(app) : undefined;
+
 
 export { app, auth };

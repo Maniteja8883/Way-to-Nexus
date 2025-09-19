@@ -8,7 +8,8 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut as firebaseSignOut
+  signOut as firebaseSignOut,
+  Auth
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import type { SignUpFormValues } from '@/components/auth/SignUpForm';
@@ -30,6 +31,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!auth) {
+      console.error("Firebase Auth is not initialized. Check your Firebase config.");
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
@@ -38,6 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signInWithGoogle = async () => {
+    if (!auth) throw new Error("Firebase Auth is not initialized.");
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
@@ -48,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signUpWithEmail = async (data: SignUpFormValues) => {
+    if (!auth) throw new Error("Firebase Auth is not initialized.");
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       return userCredential.user;
@@ -58,6 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
   
   const signInWithEmail = async (data: LoginFormValues) => {
+    if (!auth) throw new Error("Firebase Auth is not initialized.");
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       return userCredential.user;
@@ -68,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
+    if (!auth) throw new Error("Firebase Auth is not initialized.");
     try {
       await firebaseSignOut(auth);
     } catch (error) {
@@ -77,6 +87,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const value = { user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, signOut };
+
+  if (!auth) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background text-destructive-foreground p-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">Firebase Configuration Error</h1>
+          <p>Could not connect to Firebase. Please check your configuration.</p>
+        </div>
+      </div>
+    )
+  }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };
