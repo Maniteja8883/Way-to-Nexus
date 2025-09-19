@@ -11,6 +11,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import React from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
 
 const formatPathname = (pathname: string) => {
@@ -60,6 +61,7 @@ export function AppHeader() {
       <div className="flex-1">
         {generateBreadcrumbs()}
       </div>
+      <ThemeToggle />
     </header>
   );
 }
