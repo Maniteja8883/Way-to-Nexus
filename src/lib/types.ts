@@ -1,4 +1,5 @@
 
+
 export type Persona = {
   id: string;
   name: string;
@@ -37,24 +38,30 @@ export type ChatMessage = {
   timestamp: number;
 };
 
+// Updated Mindmap Types per specification
 export type MindmapNode = {
-  data: {
-    id: string;
-    label: string;
-    // position can be added if AI provides it
-    position?: { x: number; y: number };
+  id: string;
+  label: string;
+  type: 'stage' | 'choice' | 'goal' | 'skill' | 'resource' | 'exam' | 'note';
+  metadata: {
+    [key: string]: any;
+    personaPrompt?: string;
   };
 };
 
 export type MindmapEdge = {
-  data: {
-    id?: string;
-    source: string;
-    target: string;
-  };
+  from: string;
+  to: string;
+  label: string;
 };
 
 export type MindmapData = {
+  mindmap_id: string;
+  persona_id: string;
+  thread_id: string;
+  created_at: string; // ISO8601
+  title: string;
+  summary: string;
   nodes: MindmapNode[];
   edges: MindmapEdge[];
 };

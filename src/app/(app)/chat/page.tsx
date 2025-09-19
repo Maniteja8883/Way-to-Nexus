@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -21,6 +22,7 @@ export default function ChatPage() {
   const [mindmapError, setMindmapError] = useState<string | null>(null);
   const [isMindmapLoading, setIsMindmapLoading] = useState(false);
   const [isMindmapVisible, setIsMindmapVisible] = useState(true);
+  const [isDemoMindmap, setIsDemoMindmap] = useState(false);
 
   const handleNewMessage = async (newMessages: ChatMessage[]) => {
     // Optimistically update messages with user's new message and a thinking indicator
@@ -57,18 +59,24 @@ export default function ChatPage() {
     // Handle mind map generation in the background
     setIsMindmapLoading(true);
     setMindmapError(null);
+    setIsDemoMindmap(false);
     try {
       const mindmapResult = await mindmapPromise;
-      if (mindmapResult.fallbackMessage) {
-        setMindmapError(mindmapResult.fallbackMessage);
+
+      if (mindmapResult.error) {
+        setMindmapError(mindmapResult.error);
       }
-      if (mindmapResult.mindmapJson) {
-        const parsedData = JSON.parse(mindmapResult.mindmapJson);
-        setMindmapData(parsedData);
+      if (mindmapResult.fallback) {
+        setIsDemoMindmap(true);
+      }
+      if (mindmapResult.mindmap) {
+        setMindmapData(mindmapResult.mindmap);
+      } else if (!mindmapResult.error) {
+         setMindmapError("The AI returned an unexpected format for the mind map.");
       }
     } catch (error) {
       console.error("Failed to generate or parse mindmap:", error);
-      setMindmapError("Failed to generate mind map. The AI returned an unexpected format.");
+      setMindmapError("Failed to generate mind map. An unexpected error occurred.");
       setMindmapData(null);
     } finally {
       setIsMindmapLoading(false);
@@ -99,7 +107,7 @@ export default function ChatPage() {
           <>
             <ResizablePanel defaultSize={35} minSize={25}>
               <div className="h-full p-4">
-                <Mindmap data={mindmapData} error={mindmapError} isLoading={isMindmapLoading} onNodeClick={handleNodeClick} />
+                <Mindmap data={mindmapData} error={mindmapError} isLoading={isMindmapLoading} isDemo={isDemoMindmap} onNodeClick={handleNodeClick} />
               </div>
             </ResizablePanel>
             <ResizableHandle withHandle />
