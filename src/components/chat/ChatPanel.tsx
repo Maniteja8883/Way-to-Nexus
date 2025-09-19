@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,6 +13,7 @@ import { Message } from "@/components/chat/Message";
 import { Send, CornerDownLeft, BrainCircuit } from "lucide-react";
 import type { ChatMessage } from "@/lib/types";
 import { FeedbackForm } from "./FeedbackForm";
+import { useToast } from "@/hooks/use-toast";
 
 interface ChatPanelProps {
   messages: ChatMessage[];
@@ -27,33 +29,23 @@ type ChatFormValues = z.infer<typeof formSchema>;
 export function ChatPanel({ messages, onNewMessage, onNodeClick }: ChatPanelProps) {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   const form = useForm<ChatFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { content: "" },
   });
 
-  useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }, [messages]);
-
-  const handleSubmit = async (values: ChatFormValues) => {
+  const sendPrompt = useCallback(async (prompt: string) => {
     setIsLoading(true);
-    form.reset();
 
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
       role: "user",
-      content: values.content,
+      content: prompt,
       timestamp: Date.now(),
     };
     
-    // Add a mock assistant "thinking" message for immediate feedback
     const assistantThinkingMessage: ChatMessage = {
       id: `assistant-thinking-${Date.now()}`,
       role: "assistant",
@@ -65,7 +57,33 @@ export function ChatPanel({ messages, onNewMessage, onNodeClick }: ChatPanelProp
     await onNewMessage(updatedMessages);
 
     setIsLoading(false);
+  }, [messages, onNewMessage]);
+
+  const handleSubmit = async (values: ChatFormValues) => {
+    form.reset();
+    await sendPrompt(values.content);
   };
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTo({
+        top: scrollAreaRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
+
+  // This effect handles the node click by setting the form value.
+  // The actual sending is still done by the user.
+  const internalOnNodeClick = useCallback((prompt: string) => {
+    onNodeClick(prompt); // Call original prop for logging or other parent-level logic
+    form.setValue("content", prompt);
+    toast({
+      title: "Prompt Loaded",
+      description: "Press Enter or click Send to ask.",
+    });
+  }, [form, onNodeClick, toast]);
+
 
   const showFeedback = messages.length > 0 && messages[messages.length-1].role === 'assistant' && messages[messages.length-1].content !== 'Thinking...';
 

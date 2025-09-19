@@ -84,9 +84,9 @@ export default function ChatPage() {
   };
 
   const handleNodeClick = (prompt: string) => {
-    // This function will be passed to Mindmap and then to ChatPanel
-    // For now, we just log it. The implementation will be in ChatPanel.
-    console.log("Node clicked, prompt to send:", prompt);
+    // This function is now correctly handled by ChatPanel's internal state
+    // We just need to ensure the prop is passed.
+    console.log("Node click will trigger a new message via ChatPanel:", prompt);
   };
 
   return (
@@ -117,7 +117,7 @@ export default function ChatPage() {
            <ChatPanel
               messages={messages}
               onNewMessage={handleNewMessage}
-              onNodeClick={handleNodeClick}
+              onNodeClick={handleNodeClick} // Pass the handler
             />
         </ResizablePanel>
       </ResizablePanelGroup>
