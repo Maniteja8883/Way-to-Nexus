@@ -109,11 +109,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const value = { user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, signOut };
-
-  if (loading) {
-    // You might want to show a global loader here
-    return null;
-  }
   
   if (!auth) {
     return (
@@ -126,7 +121,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     )
   }
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
