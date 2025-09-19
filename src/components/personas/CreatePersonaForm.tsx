@@ -79,7 +79,9 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
       name: "",
       age: undefined,
       location: { city: "", state: "" },
+      stream: [],
       currentCourseOrJob: "",
+      careerGoals: "",
       interests: [],
       skills: [],
       preferredLearningModes: [],
@@ -485,3 +487,5 @@ export function CreatePersonaForm({ onPersonaCreate }: CreatePersonaFormProps) {
     </Form>
   );
 }
+
+    
