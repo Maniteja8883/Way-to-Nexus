@@ -98,8 +98,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       return userCredential.user;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing in with email: ", error);
+      if (error.code === 'auth/invalid-credential') {
+        throw new Error("Invalid email or password. Please check your credentials and try again.");
+      }
       throw error;
     }
   };
