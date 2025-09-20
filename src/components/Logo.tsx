@@ -10,24 +10,27 @@ export function Logo({ className }: { className?: string }) {
       aria-label="Way To Nexus Logo"
     >
       <defs>
-        <linearGradient id="roadGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="roadGradient" x1="0%" y1="100%" x2="0%" y2="0%">
           <stop offset="0%" style={{stopColor: 'hsl(var(--muted-foreground))', stopOpacity: 0.8}} />
           <stop offset="100%" style={{stopColor: 'hsl(var(--foreground))', stopOpacity: 1}} />
         </linearGradient>
       </defs>
       
-      {/* Winding Road */}
+      {/* Winding Road with perspective */}
       <path 
-        d="M15 85 C 30 60, 70 60, 85 35" 
-        stroke="url(#roadGradient)" 
-        strokeWidth="10" 
-        strokeLinecap="round" 
-        fill="none" 
+        d="M 5 85 C 20 60, 65 60, 83 35 L 87 35 C 75 60, 40 60, 25 85 Z" 
+        fill="url(#roadGradient)"
       />
-      <path 
-        d="M15 85 C 30 60, 70 60, 85 35" 
+       <path 
+        d="M 5 85 C 20 60, 65 60, 83 35" 
         stroke="hsl(var(--border))" 
-        strokeWidth="1" 
+        strokeWidth="0.5" 
+        fill="none"
+      />
+       <path 
+        d="M 25 85 C 40 60, 75 60, 87 35" 
+        stroke="hsl(var(--border))" 
+        strokeWidth="0.5" 
         fill="none"
       />
 
