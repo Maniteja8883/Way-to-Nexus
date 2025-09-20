@@ -7,6 +7,8 @@ import {
     collection, 
     addDoc, 
     getDocs,
+    doc,
+    getDoc,
     serverTimestamp,
     query,
     where,
@@ -51,6 +53,54 @@ export const addPersonaToFirestore = async (personaData: Omit<Persona, 'id' | 'c
     });
 
     return docRef.id;
+};
+
+
+/**
+ * Fetches a single persona by its ID from Firestore for the current user.
+ * @param personaId - The ID of the persona to fetch.
+ * @returns The persona data, or null if not found.
+ */
+export const getPersonaFromFirestore = async (personaId: string): Promise<Persona | null> => {
+    const userId = getUserId();
+    if (!userId) {
+        return null;
+    }
+
+    const personaDocRef = doc(db, "users", userId, "personas", personaId);
+    
+    try {
+        const docSnap = await getDoc(personaDocRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const persona: Persona = {
+                id: docSnap.id,
+                name: data.name,
+                age: data.age,
+                location: data.location,
+                educationStage: data.educationStage,
+                careerGoals: data.careerGoals,
+                interests: data.interests,
+                techComfort: data.techComfort,
+                consentToStore: data.consentToStore,
+                stream: data.stream,
+                currentCourseOrJob: data.currentCourseOrJob,
+                preferredLearningModes: data.preferredLearningModes,
+                skills: data.skills,
+                constraints: data.constraints,
+                shareAnonymously: data.shareAnonymously,
+                createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(data.createdAt),
+                updatedAt: data.updatedAt instanceof Timestamp ? data.updatedAt.toDate() : new Date(data.updatedAt),
+            };
+            return persona;
+        } else {
+            console.warn(`Persona with ID ${personaId} not found.`);
+            return null;
+        }
+    } catch (error) {
+        console.error(`Error fetching persona with ID ${personaId}:`, error);
+        throw new Error("Could not fetch persona.");
+    }
 };
 
 /**

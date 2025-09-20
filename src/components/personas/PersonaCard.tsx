@@ -96,7 +96,7 @@ export function PersonaCard({ persona, index }: PersonaCardProps) {
 
       <CardFooter>
         <Button asChild className="w-full">
-            <Link href="/chat">
+            <Link href={`/chat?personaId=${persona.id}`}>
                 Explore with this Persona <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
         </Button>
