@@ -9,28 +9,38 @@ export function Logo({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-label="Way To Nexus Logo"
     >
-        <defs>
-            <radialGradient id="nexusGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" style={{stopColor: "hsl(var(--primary))", stopOpacity: 0.75}} />
-                <stop offset="100%" style={{stopColor: "hsl(var(--primary))", stopOpacity: 0}} />
-            </radialGradient>
-        </defs>
-        
-        {/* Glow */}
-        <circle cx="50" cy="50" r="30" fill="url(#nexusGlow)" />
+      <defs>
+        <linearGradient id="roadGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style={{stopColor: 'hsl(var(--muted-foreground))', stopOpacity: 0.8}} />
+          <stop offset="100%" style={{stopColor: 'hsl(var(--foreground))', stopOpacity: 1}} />
+        </linearGradient>
+      </defs>
+      
+      {/* Winding Road */}
+      <path 
+        d="M15 85 C 30 60, 70 60, 85 35" 
+        stroke="url(#roadGradient)" 
+        strokeWidth="10" 
+        strokeLinecap="round" 
+        fill="none" 
+      />
+      <path 
+        d="M15 85 C 30 60, 70 60, 85 35" 
+        stroke="hsl(var(--border))" 
+        strokeWidth="1" 
+        fill="none"
+      />
 
-        {/* Central nexus point */}
-        <circle cx="50" cy="50" r="8" fill="currentColor" />
+      {/* Destination Pin */}
+      <path 
+        d="M85 35 A 12 12 0 1 1 85 11 A 12 12 0 0 1 85 35 Z" 
+        fill="hsl(var(--primary))"
+      />
+      <circle cx="85" cy="23" r="4" fill="hsl(var(--primary-foreground))" />
 
-        {/* Radiating paths */}
-        <path d="M50 50 L85 15" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.8" />
-        <path d="M50 50 L15 15" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.8" />
-        <path d="M50 50 L15 85" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.8" />
-        <path d="M50 50 L85 85" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.8" />
-        <path d="M50 50 L50 10" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.5" />
-        <path d="M50 50 L50 90" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.5" />
-        <path d="M50 50 L10 50" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.5" />
-        <path d="M50 50 L90 50" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.5" />
+      {/* Flag */}
+      <path d="M85 11 L 85 5" stroke="hsl(var(--foreground))" strokeWidth="1.5" />
+      <path d="M85 5 L 95 8 L 85 11 Z" fill="hsl(140 80% 40%)" />
     </svg>
   );
 }
