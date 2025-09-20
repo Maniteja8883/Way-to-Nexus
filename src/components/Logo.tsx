@@ -16,34 +16,34 @@ export function Logo({ className }: { className?: string }) {
         </linearGradient>
       </defs>
       
-      {/* Winding Road with perspective */}
+      {/* Winding Road with perspective, centered */}
       <path 
-        d="M 5 85 C 20 60, 65 60, 83 35 L 87 35 C 75 60, 40 60, 25 85 Z" 
+        d="M 40 95 C 20 70, 80 70, 62 45 L 58 45 C 75 70, 35 70, 60 95 Z" 
         fill="url(#roadGradient)"
       />
        <path 
-        d="M 5 85 C 20 60, 65 60, 83 35" 
+        d="M 40 95 C 20 70, 80 70, 62 45" 
         stroke="hsl(var(--border))" 
         strokeWidth="0.5" 
         fill="none"
       />
        <path 
-        d="M 25 85 C 40 60, 75 60, 87 35" 
+        d="M 60 95 C 35 70, 75 70, 58 45" 
         stroke="hsl(var(--border))" 
         strokeWidth="0.5" 
         fill="none"
       />
 
-      {/* Destination Pin */}
+      {/* Destination Pin, centered */}
       <path 
-        d="M85 35 A 12 12 0 1 1 85 11 A 12 12 0 0 1 85 35 Z" 
+        d="M60 45 A 12 12 0 1 1 60 21 A 12 12 0 0 1 60 45 Z" 
         fill="hsl(var(--primary))"
       />
-      <circle cx="85" cy="23" r="4" fill="hsl(var(--primary-foreground))" />
+      <circle cx="60" cy="33" r="4" fill="hsl(var(--primary-foreground))" />
 
       {/* Flag */}
-      <path d="M85 11 L 85 5" stroke="hsl(var(--foreground))" strokeWidth="1.5" />
-      <path d="M85 5 L 95 8 L 85 11 Z" fill="hsl(140 80% 40%)" />
+      <path d="M60 21 L 60 15" stroke="hsl(var(--foreground))" strokeWidth="1.5" />
+      <path d="M60 15 L 70 18 L 60 21 Z" fill="hsl(140 80% 40%)" />
     </svg>
   );
 }
