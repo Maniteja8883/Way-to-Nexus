@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -11,13 +12,11 @@ export default function LandingPage() {
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background p-4">
       <Hero3D />
       <main className="z-10 flex flex-col items-center text-center animate-in fade-in-0 slide-in-from-bottom-12 duration-1000">
-        <div className="flex items-center gap-4 mb-6">
-          <Logo className="h-16 w-16 text-primary" />
-          <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-foreground">
-            Way To Nexus
-          </h1>
-        </div>
-        <p className="font-body max-w-2xl text-lg md:text-xl text-muted-foreground mb-8">
+        <Logo className="h-24 w-24 text-primary mb-4" />
+        <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-foreground">
+          Way To Nexus
+        </h1>
+        <p className="font-body max-w-2xl text-lg md:text-xl text-muted-foreground mt-4 mb-8">
           Navigate your career path with confidence. AI-powered guidance, personalized insights, and a direct line to your future.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
